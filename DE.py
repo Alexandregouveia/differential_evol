@@ -14,8 +14,10 @@ def DE(gen,f):
     pais = entrada
     while ngen<gen:# condicao de parada
         for i in range(len(pais)):
-            if (i==len(pais) or i==len(pais)-1): # para os 2 ultimos elementos
+            if (i==len(pais)-1): # para o penultimo elementos
                 filho = crossover(pais[i], pais[i + 1])
+            elif (i==len(pais)):
+                filho = crossover(pais[i], pais[0])
             else:
                 if rint(0,1)==0:# Escolhe aleatoriamente entre crossover ou mutacao
                     filho = mutacao(pais[i], pais[i+1], pais[i+2], f)
