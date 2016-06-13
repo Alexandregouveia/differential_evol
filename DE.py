@@ -16,7 +16,7 @@ def DE(gen,f):
         for i in range(len(pais)):
             if (i==len(pais)-1): # para o penultimo elementos
                 filho = crossover(pais[i], pais[i + 1])
-            elif (i==len(pais)):
+            elif (i==len(pais)): # utiliza o primeiro elemento na multacao do ultimo
                 filho = crossover(pais[i], pais[0])
             else:
                 if rint(0,1)==0:# Escolhe aleatoriamente entre crossover ou mutacao
