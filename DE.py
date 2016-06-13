@@ -23,7 +23,7 @@ def DE(gen,f):
                     filho = mutacao(pais[i], pais[i+1], pais[i+2], f)
                 else:
                     filho = crossover(pais[i], pais[i+1])
-
+        for i in
             ngen +=1
 
 
@@ -54,5 +54,19 @@ def selecao(pais, filhos):
             saida.append(filhos[i])
     return saida
 
-'''for j in range(len(entrada[0])-1):
-                print(entrada[i][j])'''
+def distancia(matriz):# escolhe aleatoriamente os centroides
+    while True:
+        nun=rint(0,len(matriz)-1)
+        if matriz[nun][2]==1:
+            break
+    while True:
+        nun2 = rint(0, len(matriz) - 1)
+        if matriz[nun2][2] == -1:
+            break
+    return nun, nun2
+
+def fitness(matriz):
+    for k in range(2):
+        for i in range(len(matriz)):
+
+'''Work in progress'''
