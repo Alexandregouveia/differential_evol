@@ -12,6 +12,8 @@ def DE(gen,f):
             aux.append(float(j))
         entrada.append(aux)
     pais = entrada
+    cent1, cent2 = distancia(pais)
+
     while ngen<gen:# condicao de parada
         for i in range(len(pais)):
             if (i==len(pais)-1): # para o penultimo elementos
@@ -23,7 +25,6 @@ def DE(gen,f):
                     filho = mutacao(pais[i], pais[i+1], pais[i+2], f)
                 else:
                     filho = crossover(pais[i], pais[i+1])
-        for i in
             ngen +=1
 
 
@@ -65,8 +66,10 @@ def distancia(matriz):# escolhe aleatoriamente os centroides
             break
     return nun, nun2
 
-def fitness(matriz):
-    for k in range(2):
-        for i in range(len(matriz)):
+def fitness(matriz, cent1, cent2):
+    for i in range(len(matriz)):
+        if matriz[i][2]==1:
+            j= (matriz[i][0]-matriz[cent1][0])**2+ (matriz[i][1]-matriz[cent1][1])**2
+
 
 '''Work in progress'''
