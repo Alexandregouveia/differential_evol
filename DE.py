@@ -45,8 +45,14 @@ def mutacao(pai, vizinho1, vizinho2, f):
 
     return filho
 
-
-mutacao(pai=[2.34,3.7,1],vizinho1=[2.21,3.42,1],vizinho2=[4.2,1.22,-1],f=2)
+def selecao(pais, filhos):
+    saida = []
+    for i in range (len(pais)):
+        if pais[i][-1]>filhos[i][-1]:
+            saida.append(pais[i])
+        else:
+            saida.append(filhos[i])
+    return saida
 
 '''for j in range(len(entrada[0])-1):
                 print(entrada[i][j])'''
