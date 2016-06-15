@@ -2,6 +2,8 @@ import csv
 from random import randint as rint
 '''Parametros: gen= numero de geracoes
                f= constante real entre 0 e 2'''
+
+
 def DE(gen,f):
 
     base = csv.reader(open('base.txt'), delimiter= ' ')
@@ -30,9 +32,11 @@ def DE(gen,f):
                     filho = crossover(pais[i], pais[i+1])
             filho.append(fitness(filho, pais[cent1], pais[cent2]))
             filhos.append(filho)
-        print(filhos)
+        pais = selecao(pais,filhos)
+        print(ngen)
         ngen += 1
-
+    for i in pais:
+        print(i)
 
 def crossover(pai1, pai2):
     filho = []
@@ -76,8 +80,8 @@ def distancia(matriz):# escolhe aleatoriamente os centroides
 
 def fitness(matriz, cent1, cent2):# j0 = 0.1
     j = ((matriz[0]-cent1[0])**2 + (matriz[1]-cent1[1])**2) + ((matriz[0]-cent2[0])**2 + (matriz[1]-cent2[1])**2)
-    fit = 2*(j + 0.1)
+    fit = 100//(j + 0.1)
     return fit
 
 '''Work in progress'''
-DE(1,2)
+DE(5,2)
