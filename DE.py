@@ -1,7 +1,7 @@
 import csv
 from random import randint as rint
 from sklearn.preprocessing import normalize
-import k_means
+from k_means import k_means
 '''Parametros: gen= numero de geracoes
                f= constante real entre 0 e 2'''
 
@@ -42,6 +42,7 @@ def DE(gen,f):
     for i in pais:
         output.write(str(i[-1]) + '\n')
         print(i)
+
 
 def crossover(pai1, pai2):
     filho = []

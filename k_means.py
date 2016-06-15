@@ -7,7 +7,7 @@ def k_means(pais, centroid1, centroid2):
     cluster1 = []
     cluster2 = []
     for i in range(len(pais)):
-        if calc_dist(pais[i], centroid1) > calc_dist(pais[i], centroid2):  # classe 1
+        if calc_dist(pais[i], centroid1) > calc_dist(pais[i], centroid2):
             pais[2] = 1
             centroid1 = att_dist(pais[i], centroid1, cluster1)
         else:  # classe -1
