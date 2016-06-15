@@ -41,13 +41,20 @@ def calc_dist(pai, cent1):
 
 def att_dist(pai, cent, cluster):
     novo = []
+    cluster.append(pai)# adiciona o elemento ao cluster para atualizar o valor
     for i in range(len(cluster)):
-        cent[0] = pai[0] + cent[0]
-        cent[1] = pai[1] + cent[1]
+        cent[0] = cluster[i][0] + cent[0]
+        cent[1] = cluster[i][1] + cent[1]
     novo.append(cent[0]/len(cluster))
     novo.append(cent[1] / len(cluster))
-
     return novo
 
-def att_dist2(pai, cent):
-    cent[0] = pai[0]
+
+def att_dist2(pai, cent, cluster):
+    novo = []
+    cluster.remove(pai)  # adiciona o elemento ao cluster para atualizar o valor
+    for i in range(len(cluster)):
+        cent[0] = cluster[i][0] + cent[0]
+        cent[1] = cluster[i][1] + cent[1]
+    novo.append(cent[0] / len(cluster))
+    novo.append(cent[1] / len(cluster))
