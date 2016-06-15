@@ -1,11 +1,13 @@
 import csv
 from random import randint as rint
+from sklearn.preprocessing import normalize
+import k_means
 '''Parametros: gen= numero de geracoes
                f= constante real entre 0 e 2'''
 
 
 def DE(gen,f):
-
+    output = open('saida.txt','w')
     base = csv.reader(open('base.txt'), delimiter= ' ')
     entrada,pais, ngen = [], [], 0
     for i in base:
@@ -15,10 +17,10 @@ def DE(gen,f):
         entrada.append(aux)
     pais = entrada
     cent1, cent2 = distancia(pais)
-    for i in range(len(pais)):
+    for i in range(len(pais)): # calcula o fitness dos pais
         fit = fitness(pais[i], pais[cent1], pais[cent2])
         pais[i].append(fit)
-    while ngen<gen:  # condicao de parada
+    while ngen<gen:  # condicao de parada(nº de gerações)
         filhos = []
         for i in range(len(pais)):
             if i == len(pais)-1:  # para o ultimo elementos
@@ -32,10 +34,13 @@ def DE(gen,f):
                     filho = crossover(pais[i], pais[i+1])
             filho.append(fitness(filho, pais[cent1], pais[cent2]))
             filhos.append(filho)
+            filhos = k_means(filhos, cent1, cent2)
         pais = selecao(pais,filhos)
         print(ngen)
         ngen += 1
+    pais = normalize(pais)
     for i in pais:
+        output.write(str(i[-1]) + '\n')
         print(i)
 
 def crossover(pai1, pai2):
@@ -78,7 +83,7 @@ def distancia(matriz):# escolhe aleatoriamente os centroides
     return nun, nun2
 
 
-def fitness(matriz, cent1, cent2):# j0 = 0.1
+def fitness(matriz, cent1, cent2):# j0 = 0.1 k=2
     j = ((matriz[0]-cent1[0])**2 + (matriz[1]-cent1[1])**2) + ((matriz[0]-cent2[0])**2 + (matriz[1]-cent2[1])**2)
     fit = 100//(j + 0.1)
     return fit
