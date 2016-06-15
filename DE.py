@@ -1,7 +1,6 @@
 import csv
 from random import randint as rint
 from sklearn.preprocessing import normalize
-from k_means import k_means
 '''Parametros: gen= numero de geracoes
                f= constante real entre 0 e 2'''
 
@@ -34,14 +33,13 @@ def DE(gen,f):
                     filho = crossover(pais[i], pais[i+1])
             filho.append(fitness(filho, pais[cent1], pais[cent2]))
             filhos.append(filho)
-            filhos = k_means(filhos, cent1, cent2)
         pais = selecao(pais,filhos)
-        print(ngen)
+        cent1, cent2 = distancia(pais)
         ngen += 1
     pais = normalize(pais)
     for i in pais:
         output.write(str(i[-1]) + '\n')
-        print(i)
+        #print(i)
 
 
 def crossover(pai1, pai2):
@@ -89,5 +87,62 @@ def fitness(matriz, cent1, cent2):# j0 = 0.1 k=2
     fit = 100//(j + 0.1)
     return fit
 
+
+def k_means(pais, centroid1, centroid2):
+    print(centroid1, centroid2)
+    cluster1 = []
+    cluster2 = []
+    for i in range(len(pais)):
+        if calc_dist(pais[i], centroid1) > calc_dist(pais[i], centroid2):
+            pais[2] = 1
+            centroid1 = att_dist(pais[i], centroid1, cluster1)
+        else:  # classe -1
+            print(len(pais))
+            pais[2] = -1
+            centroid1 = att_dist(pais[i], centroid2)
+
+    for i in range(10): # 10 iteracoes
+        for i in range(len(pais)):
+            if calc_dist(pais[i], centroid1) > calc_dist(pais[i], centroid2):# classe 1
+                if pais[2] == 1:
+                    att_dist(pais[i], centroid1, cluster1)
+                else:
+                    att_dist(pais[i], centroid1, cluster1)
+                    att_dist2(pais[i], centroid2, cluster2)
+            else: # classe -1
+                if pais[2] == -1:
+                    att_dist(pais[i], centroid2, cluster2)
+                else:
+                    att_dist(pais[i], centroid2, cluster2)
+                    att_dist2(pais[i], centroid1, cluster1)
+    return pais
+
+
+def calc_dist(pai, cent1): #calcula a distancia entre a instancia e o centroid
+    print(pai, cent1)
+    dist = ((pai[0]-cent1[0])**2 + (pai[1]-cent1[1])**2)
+    return dist
+
+
+def att_dist(pai, cent, cluster): # adiciona o elemento ao cluster
+    novo = []
+    cluster.append(pai)# adiciona o elemento ao cluster para atualizar o valor
+    for i in range(len(cluster)):
+        cent[0] = cluster[i][0] + cent[0]
+        cent[1] = cluster[i][1] + cent[1]
+    novo.append(cent[0]/len(cluster))
+    novo.append(cent[1] / len(cluster))
+    return novo
+
+
+def att_dist2(pai, cent, cluster): # remove o elemento do cluster caso ele tenha sido classificado errado
+    novo = []
+    cluster.remove(pai)  # adiciona o elemento ao cluster para atualizar o valor
+    for i in range(len(cluster)):
+        cent[0] = cluster[i][0] + cent[0]
+        cent[1] = cluster[i][1] + cent[1]
+    novo.append(cent[0] / len(cluster))
+    novo.append(cent[1] / len(cluster))
+
 '''Work in progress'''
-DE(5,2)
+DE(5, 2)
