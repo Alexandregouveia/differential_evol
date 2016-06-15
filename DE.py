@@ -74,9 +74,9 @@ def distancia(matriz):# escolhe aleatoriamente os centroides
     return nun, nun2
 
 
-def fitness(matriz, cent1, cent2):# informar as instancias nao os indices
-    j=((matriz[0]-cent1[0])**2 + (matriz[1]-cent1[1])**2) + ((matriz[0]-cent2[0])**2 + (matriz[1]-cent2[1])**2)
-    fit = 2*(j +0.1)
+def fitness(matriz, cent1, cent2):# j0 = 0.1
+    j = ((matriz[0]-cent1[0])**2 + (matriz[1]-cent1[1])**2) + ((matriz[0]-cent2[0])**2 + (matriz[1]-cent2[1])**2)
+    fit = 2*(j + 0.1)
     return fit
 
 '''Work in progress'''
