@@ -2,11 +2,14 @@ import csv
 from random import randint as rint
 from sklearn.preprocessing import normalize
 '''Parametros: gen= numero de geracoes
-               f= constante real entre 0 e 2'''
+               f= constante real entre 0 e 2
+               Os resultados exibidos estão normalizados
+'''
 
 
 def DE(gen,f):
-    output = open('saida.txt','w')
+    output = open('saida.txt', 'w')
+    result = open('result.txt', 'w')
     base = csv.reader(open('base.txt'), delimiter= ' ')
     entrada,pais, ngen = [], [], 0
     for i in base:
@@ -19,7 +22,7 @@ def DE(gen,f):
     for i in range(len(pais)): # calcula o fitness dos pais
         fit = fitness(pais[i], pais[cent1], pais[cent2])
         pais[i].append(fit)
-    while ngen<gen:  # condicao de parada(nº de gerações)
+    while ngen < gen:  # condicao de parada(nº de gerações)
         filhos = []
         for i in range(len(pais)):
             if i == len(pais)-1:  # para o ultimo elementos
@@ -34,12 +37,13 @@ def DE(gen,f):
             filho.append(fitness(filho, pais[cent1], pais[cent2]))
             filhos.append(filho)
         pais = selecao(pais,filhos)
-        cent1, cent2 = distancia(pais)
+        cent1, cent2 = distancia(pais)# atualiza os centroides apos cada geracao
         ngen += 1
     pais = normalize(pais)
+    pais = k_means(pais,pais[cent1], pais[cent2])
     for i in pais:
         output.write(str(i[-1]) + '\n')
-        #print(i)
+        result.write(str(i) + '\n')
 
 
 def crossover(pai1, pai2):
@@ -94,23 +98,23 @@ def k_means(pais, centroid1, centroid2):
     cluster2 = []
     for i in range(len(pais)):
         if calc_dist(pais[i], centroid1) > calc_dist(pais[i], centroid2):
-            pais[2] = 1
+            pais[i][2] = 1
             centroid1 = att_dist(pais[i], centroid1, cluster1)
         else:  # classe -1
             print(len(pais))
-            pais[2] = -1
-            centroid1 = att_dist(pais[i], centroid2)
+            pais[i][2] = -1
+            centroid1 = att_dist(pais[i], centroid2, cluster2)
 
     for i in range(10): # 10 iteracoes
         for i in range(len(pais)):
             if calc_dist(pais[i], centroid1) > calc_dist(pais[i], centroid2):# classe 1
-                if pais[2] == 1:
+                if pais[i][2] == 1:
                     att_dist(pais[i], centroid1, cluster1)
                 else:
                     att_dist(pais[i], centroid1, cluster1)
                     att_dist2(pais[i], centroid2, cluster2)
             else: # classe -1
-                if pais[2] == -1:
+                if pais[i][2] == -1:
                     att_dist(pais[i], centroid2, cluster2)
                 else:
                     att_dist(pais[i], centroid2, cluster2)
@@ -119,7 +123,6 @@ def k_means(pais, centroid1, centroid2):
 
 
 def calc_dist(pai, cent1): #calcula a distancia entre a instancia e o centroid
-    print(pai, cent1)
     dist = ((pai[0]-cent1[0])**2 + (pai[1]-cent1[1])**2)
     return dist
 
@@ -137,12 +140,16 @@ def att_dist(pai, cent, cluster): # adiciona o elemento ao cluster
 
 def att_dist2(pai, cent, cluster): # remove o elemento do cluster caso ele tenha sido classificado errado
     novo = []
-    cluster.remove(pai)  # adiciona o elemento ao cluster para atualizar o valor
+    try:
+        cluster.remove(pai)  # remove o elemento ao cluster para atualizar o valor
+    except:
+        pass
     for i in range(len(cluster)):
         cent[0] = cluster[i][0] + cent[0]
         cent[1] = cluster[i][1] + cent[1]
     novo.append(cent[0] / len(cluster))
     novo.append(cent[1] / len(cluster))
+    return novo
 
 '''Work in progress'''
 DE(5, 2)
